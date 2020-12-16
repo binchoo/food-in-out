@@ -11,9 +11,6 @@ def preprocess(ds, shape, shuffle=False, augment=False):
     
     if shuffle:
         ds = ds.shuffle(1000)
-    
-    ds = ds.map(lambda x, y: (normalize(x), y), num_parallel_calls=AUTOTUNE)
-
     #return ds.prefetch(buffer_size=AUTOTUNE)
     return ds
 
@@ -28,4 +25,5 @@ flip_rotation = ks.models.Sequential([
     layers.experimental.preprocessing.RandomRotation(0.2)
 ])
 
-normalize = layers.experimental.preprocessing.Rescaling(1./255)
+def normalizer(input_shape):
+    return layers.experimental.preprocessing.Rescaling(1./255, input_shape=input_shape)
